@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     startCounter();
     handleMinusBtn();
     handlePlusBtn();
+    handleHeartBtn();
     handlePauseBtn();
     handleSubmit();
 })
@@ -9,50 +10,60 @@ document.addEventListener('DOMContentLoaded', () => {
 let setIntervalID;
 let counter = 0;
 const getCounter = document.querySelector('#counter');
+const getPauseBtn = document.querySelector('#pause');
+const getMinusBtn = document.querySelector('#minus');
+const getPlusBtn = document.querySelector('#plus');
+const getHeartBtn = document.querySelector('#heart');
+const getForm = document.querySelector('#comment-form');
 
 function startCounter() {
     setIntervalID = setInterval(() => {
-        counter ++;
+        counter += 1;
         getCounter.textContent = counter;
     }, 1000);
 }
 
 function handlePauseBtn() {
-    const pauseBtn = document.querySelector('#pause');
-    pauseBtn.addEventListener('click', () => {
-        if(pauseBtn.textContent === ' pause ') {
+    getPauseBtn.addEventListener('click', () => {
+        if(getPauseBtn.textContent === ' pause ') {
             clearInterval(setIntervalID);
-            document.querySelector('#minus').disabled = true;
-            document.querySelector('#plus').disabled = true;
-            document.querySelector('#heart').disabled = true;
-            pauseBtn.textContent = ' resume ';
-        } else if (pauseBtn.textContent === ' resume ') {
+            getMinusBtn.disabled = true;
+            getPlusBtn.disabled = true;
+            getHeartBtn.disabled = true;
+            getPauseBtn.textContent = ' resume ';
+        } else if (getPauseBtn.textContent === ' resume ') {
             counter = parseInt(getCounter.textContent);
             startCounter();
-            document.querySelector('#minus').disabled = false;
-            document.querySelector('#plus').disabled = false;
-            document.querySelector('#heart').disabled = false;
-            pauseBtn.textContent = ' pause ';
+            getMinusBtn.disabled = false;
+            getPlusBtn.disabled = false;
+            getHeartBtn.disabled = false;
+            getPauseBtn.textContent = ' pause ';
         }
     })
 }
 
 function handleMinusBtn() {
-    const minusBtn = document.querySelector('#minus');
-    minusBtn.addEventListener('click', () => {
+    getMinusBtn.addEventListener('click', () => {
         counter = parseInt(getCounter.textContent -= 1);
     })
 }
 
 function handlePlusBtn() {
-    const plusBtn = document.querySelector('#plus');
-    plusBtn.addEventListener('click', () => {
+    getPlusBtn.addEventListener('click', () => {
         counter = parseInt(getCounter.textContent ++);
     })
 }
 
+function handleHeartBtn() {
+    getHeartBtn.addEventListener('click', () => {
+        const likes = document.querySelector('.likes');
+        const li = document.createElement('li');
+        li.textContent = `${getCounter.textContent} has been liked.`;
+        likes.append(li);
+    })
+}
+
 function handleSubmit() {
-    let getForm = document.querySelector('#comment-form');
     getForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const commentInput = document.querySelector('input').value;
