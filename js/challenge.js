@@ -18,7 +18,7 @@ const getForm = document.querySelector('#comment-form');
 
 function startCounter() {
     setIntervalID = setInterval(() => {
-        counter += 1;
+        counter++;
         getCounter.textContent = counter;
     }, 1000);
 }
@@ -44,22 +44,35 @@ function handlePauseBtn() {
 
 function handleMinusBtn() {
     getMinusBtn.addEventListener('click', () => {
-        counter = parseInt(getCounter.textContent -= 1);
+        counter--;
+        getCounter.textContent = counter;
     })
 }
 
 function handlePlusBtn() {
     getPlusBtn.addEventListener('click', () => {
-        counter = parseInt(getCounter.textContent ++);
+        counter++;
+        getCounter.textContent = counter;
     })
 }
 
 function handleHeartBtn() {
+    let numsArr = [];
     getHeartBtn.addEventListener('click', () => {
+        const counterValue = parseInt(getCounter.innerText);
         const likes = document.querySelector('.likes');
-        const li = document.createElement('li');
-        li.textContent = `${getCounter.textContent} has been liked.`;
-        likes.append(li);
+        if(numsArr.includes(counterValue)) {
+            numsArr.push(counterValue);
+            const numLiked = numsArr.filter(num => num === counterValue);
+            const dataNum = document.querySelector(`li[data-num='${getCounter.textContent}']`);
+            dataNum.innerHTML = `${counterValue} has been liked <span>${numLiked.length}</span> times.`;
+        } else {
+            const li = document.createElement('li');
+            li.setAttribute('data-num', `${getCounter.textContent}`);
+            li.innerHTML = `${counterValue} has been liked <span>1</span> time.`;
+            numsArr.push(counterValue);
+            likes.append(li);
+        }
     })
 }
 
